@@ -45,10 +45,12 @@ Multiple sources and destinations may be specified.
       raise "Not a directory: #{save_to}" unless File.directory? save_to
 
       mirror = Gem::Mirror.new(get_from, save_to, parallelism)
-      
-      say "Fetching: #{mirror.from(Gem::Mirror::SPECS_FILE_Z)} with #{parallelism} threads"
-      mirror.update_specs
 
+      Gem::Mirror::SPECS_FILES.each do |sf|
+        say "Fetching: #{mirror.from(sf)} with #{parallelism} threads"
+      end
+
+      mirror.update_specs
       say "Total gems: #{mirror.gems.size}"
 
       num_to_fetch = mirror.gems_to_fetch.size
